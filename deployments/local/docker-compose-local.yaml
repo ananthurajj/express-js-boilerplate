@@ -1,0 +1,51 @@
+services:
+  mongo:
+    image: mongo:latest
+    restart: always
+    ports:
+      - '27017:27017'
+    volumes:
+      - db_data:/data/db
+      - db_config:/data/configdb
+
+  redis:
+    image: redis:7
+    restart: always
+    ports:
+      - '6371:6379'
+    command: redis-server --save 20 1 --loglevel warning
+    volumes:
+      - cache:/data
+
+  localstack:
+    image: localstack/localstack
+    ports:
+      - '4566:4566'
+      - '4510-4559:4510-4559'
+    environment:
+      - DEBUG=1
+      - SERVICES=s3,sqs,iam,scheduler
+    volumes:
+      - localstack_data:/var/lib/localstack
+      - '/var/run/docker.sock:/var/run/docker.sock'
+
+  # user-service:
+  #   build:
+  #     context: '../../'
+  #     dockerfile: './apps/user-service/Dockerfile'
+  #   ports:
+  #     - '3000:3000'
+  #   environment:
+  #     - HOST=0.0.0.0
+  #     - PORT=3000
+  #     - MONGO_URI=mongodb://mongo:27017/user-service
+  #   depends_on:
+  #     - mongo
+  #     - redis
+  #     - localstack
+
+volumes:
+  db_data:
+  db_config:
+  cache:
+  localstack_data:

@@ -1,0 +1,43 @@
+{
+    "extends": [
+        "@commitlint/config-conventional"
+    ],
+    "rules": {
+        "header-max-length": [
+            0,
+            "always",
+            100
+        ],
+        "type-empty": [
+            2,
+            "never"
+        ],
+        "scope-empty": [
+            2,
+            "never"
+        ],
+        "subject-empty": [
+            2,
+            "never"
+        ],
+        "subject-case": [
+            2,
+            "always",
+            [
+                "sentence-case"
+            ]
+        ],
+        "scope-enum": [
+            2,
+            "always",
+            [
+                "user-service"
+            ]
+        ],
+        "scope-case": [
+            2,
+            "always",
+            "kebab-case"
+        ]
+    }
+}
