@@ -3,7 +3,7 @@ import { assign, keys, size } from 'lodash';
 import { DateTime } from 'luxon';
 import Mailgun from 'mailgun.js';
 
-import { emailConfig } from './email-work-flow-data.config';
+import { emailConfig } from './email-work-flow-data.config.mjs';
 
 const mailgun = new Mailgun(formData);
 const API_KEY = process.env.MAILGUN_API_KEY;
