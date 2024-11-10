@@ -25,6 +25,7 @@
     "luxon": "^3.5.0",
     "mongodb-memory-server": "^10.1.2",
     "redis": "^4.7.0",
+    "sqs-consumer": "^11.2.0",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1",
     "twilio": "^5.3.5"
