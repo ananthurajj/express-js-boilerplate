@@ -1,13 +1,11 @@
-import { AccessMode, appMainSDK } from 'codegen-sdk';
-import { assign, join, keys, pick, size } from 'lodash';
-import { SQSHandler } from 'shared-backend';
-import { notificationConfig } from './notification-work-flow-data.config';
-
+import pkg from 'lodash';
+import { SQSHandler } from '../../../aws/sqs.mjs';
+import { notificationConfig } from './notification-work-flow-data.config.mjs';
+const { assign, join, keys, pick, size } = pkg;
 export async function sendNotification(notificationData) {
   try {
     /*  notification template section start */
     const promises = [];
-    const { sdk } = appMainSDK(AccessMode.serviceAdmin, process.env.APP_MAIN_TOKEN);
 
     const event = notificationConfig[notificationData.template];
     /* for method worker */
@@ -45,9 +43,10 @@ export async function sendNotification(notificationData) {
       'redirectPath',
       'eventData',
     ]);
-    const notification = await sdk.CreateNotification({ data: data });
-    if (notification.createNotification._id)
-      payload.data.notificationId = notification.createNotification._id.toString();
+    // const notification = await CreateNotification({ data: data }); //Save Notification on Db
+
+    // if (notification.createNotification._id)
+    //   payload.data.notificationId = notification.createNotification._id.toString();
     if (event.pushType) {
       console.log('Push notification Sent');
       SQSHandler({

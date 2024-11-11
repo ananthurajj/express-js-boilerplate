@@ -1,8 +1,8 @@
-import { AccessMode, appMainSDK } from 'codegen-sdk';
 import { DeviceType } from 'codegen-sdk/dist/generated/sdk';
 import Expo from 'expo-server-sdk';
 import { assign, keys, map } from 'lodash';
 import pino from 'pino';
+import { DeviceTokenModel } from '../../../../src/account/index.mjs';
 import { notificationConfig } from './notification-work-flow-data.config.mjs';
 //import { SQSHandlerMessage } from "shared-backend";
 
@@ -11,7 +11,6 @@ export async function sendNotification(notificationData) {
     /*  notification template section start */
     const promises = [];
     const expo = new Expo({ accessToken: process.env.EXPO_ACCESS_TOKEN }); //check the deprecated useFcm
-    const { sdk } = appMainSDK(AccessMode.serviceAdmin, process.env.APP_MAIN_TOKEN);
 
     const event = notificationConfig[notificationData.templateName];
 
@@ -28,24 +27,19 @@ export async function sendNotification(notificationData) {
       event.description = event.description.replace(new RegExp(event.fields[field], 'g'), notificationData.data[field]);
     }
 
-    const { getAllDeviceTokenCount } = await sdk.getAllDeviceTokenCount({
-      filter: {
+    const { getAllDeviceTokenCount } = await DeviceTokenModel.find({
+      userId: notificationData.data.sendToId,
+      deviceToken: { $ne: null },
+      deviceId: { $ne: null },
+      deviceType: { $ne: DeviceType.NotProvided },
+    });
+    if (getAllDeviceTokenCount > 0) {
+      const { getAllDeviceToken } = await DeviceTokenModel.find({
         userId: notificationData.data.sendToId,
         deviceToken: { $ne: null },
         deviceId: { $ne: null },
         deviceType: { $ne: DeviceType.NotProvided },
-      },
-    });
-    if (getAllDeviceTokenCount > 0) {
-      const { getAllDeviceToken } = await sdk.getAllDeviceToken({
-        filter: {
-          userId: notificationData.data.sendToId,
-          deviceToken: { $ne: null },
-          deviceId: { $ne: null },
-          deviceType: { $ne: DeviceType.NotProvided },
-        },
-        limit: getAllDeviceTokenCount,
-      });
+      }).limit(getAllDeviceTokenCount);
 
       const notificationObjs = [];
       // const { incrementUnreadCount } = await sdk.incrementUnreadCount({ userId: data.sendTo });

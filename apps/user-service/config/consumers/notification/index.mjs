@@ -1,5 +1,5 @@
 import { Consumer } from 'sqs-consumer';
-import { sqs } from '../aws/sqs.mjs';
+import { sqs } from '../../aws/sqs.mjs';
 import { notificationHandler } from './services/handler.mjs';
 export const notificationConsumer = Consumer.create({
   queueUrl: String(process.env.NOTIFICATION_QUEUE),
