@@ -1,3 +1,4 @@
+import { sendNotification } from '../../../config/notification/index.mjs';
 import { UserModel } from '../index.mjs';
 
 // Get a user by ID
@@ -48,6 +49,7 @@ export const createUser = async (req, res) => {
   try {
     const newUser = new UserModel(userData);
     const savedUser = await newUser.save();
+    await sendNotification('user-welcome-mail', newUser, newUser);
     res.status(201).json(savedUser);
   } catch (error) {
     res.status(500).json({ message: error.message });

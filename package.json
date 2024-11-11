@@ -53,6 +53,8 @@
   },
   "dependencies": {
     "lodash": "^4.17.21",
-    "mongoose": "^8.6.2"
+    "mailgun.js": "^10.2.3",
+    "mongoose": "^8.6.2",
+    "sqs-consumer": "^11.2.0"
   }
 }

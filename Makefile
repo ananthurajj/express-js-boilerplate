@@ -57,4 +57,6 @@ else
 	@aws --endpoint=$(AWS_ENDPOINT) s3api create-bucket --bucket express-check-bucket
 endif
 	@echo "Creating necessary SQS queues"
-	@aws --endpoint=$(AWS_ENDPOINT) sqs create-queue --queue-name testQueue
+	@aws --endpoint=$(AWS_ENDPOINT) sqs create-queue --queue-name emailQueue
+	@aws --endpoint=$(AWS_ENDPOINT) sqs create-queue --queue-name notificationQueue
+	@aws --endpoint=$(AWS_ENDPOINT) sqs create-queue --queue-name pushNotificationQueue
