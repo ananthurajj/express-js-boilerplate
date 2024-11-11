@@ -3,12 +3,12 @@ import 'dotenv/config';
 import express from 'express';
 import swaggerUi from 'swagger-ui-express';
 import { CacheService } from './config/cache-service/cache-service.mjs';
+import { notificationConsumer } from './config/consumers/notification/index.mjs';
 import { ServiceVerify, SetCurrentUser, TokenVerify } from './config/jwt-authentication/token-verify.mjs';
 import connectDB from './config/mongodb/connect-mongo-db.mjs';
 import { AccountRoutes } from './src/account/index.mjs';
 import { UserRoutes } from './src/user/index.mjs';
 import swaggerSpec from './swagger.mjs';
-
 // Connect to DB
 await connectDB(process.env.MONGO_URI);
 
@@ -51,6 +51,7 @@ app.use('/api/v1/users', UserRoutes);
 app.use('/api/v1/accounts', AccountRoutes);
 
 const PORT = process.env.PORT || 3000;
+notificationConsumer.start();
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);

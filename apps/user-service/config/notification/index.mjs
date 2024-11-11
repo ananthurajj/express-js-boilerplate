@@ -1,3 +1,6 @@
+import pgk from 'lodash';
+import { SQSHandler } from '../aws/sqs.mjs';
+const { join } = pgk;
 export const sendNotification = async (type, user, event) => {
   const notificationHandlers = {
     'user-welcome-mail': async () => {
@@ -21,6 +24,6 @@ export const sendNotification = async (type, user, event) => {
   try {
     await notify();
   } catch (err) {
-    console.log('Create Notification error on session module');
+    console.log('Create Notification error on session module', err);
   }
 };
